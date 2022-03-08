@@ -38,17 +38,6 @@ for image_batch, labels_batch in dataset.take(1):
     print(image_batch.shape)
     print(labels_batch.numpy())
 
-train_size = 0.8
-
-train_ds = dataset.take(54)
-
-test_ds = dataset.skip(54)
-
-val_size=0.1
-
-val_ds = test_ds.take(6)
-
-test_ds = test_ds.skip(6)
 
 def get_dataset_partitions_tf(ds, train_split=0.8, val_split=0.1, test_split=0.1, shuffle=True, shuffle_size=10000):
     assert (train_split + test_split + val_split) == 1
