@@ -19,7 +19,8 @@ from tensorflow.keras import models, layers
 data_dir_train = pathlib.Path("/content/drive/MyDrive/Skin Cancer/Train")
 
 BATCH_SIZE = 32
-IMAGE_SIZE = 256
+IMAGE_SIZEx = 600
+IMAGE_SIZEy = 450
 CHANNELS=3
 EPOCHS=50
 
@@ -27,7 +28,7 @@ dataset = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir_train,
     seed=123,
     shuffle=True,
-    image_size=(IMAGE_SIZE,IMAGE_SIZE),
+    image_size=(IMAGE_SIZEx,IMAGE_SIZEy),
     batch_size=BATCH_SIZE
 )
 
@@ -63,7 +64,7 @@ val_ds = val_ds.cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
 test_ds = test_ds.cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
 
 resize_and_rescale = tf.keras.Sequential([
-  layers.experimental.preprocessing.Resizing(IMAGE_SIZE, IMAGE_SIZE),
+  layers.experimental.preprocessing.Resizing(IMAGE_SIZEx, IMAGE_SIZEy),
   layers.experimental.preprocessing.Rescaling(1./255),
 ])
 
@@ -79,7 +80,7 @@ train_ds = train_ds.map(
 ).prefetch(buffer_size=tf.data.AUTOTUNE)
 
 from tensorflow.python.keras.layers.core import Dropout
-input_shape = (BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
+input_shape = (BATCH_SIZE, IMAGE_SIZEx, IMAGE_SIZEy, CHANNELS)
 n_classes = 9
 
 model = models.Sequential([
